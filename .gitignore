@@ -13,5 +13,6 @@
 /open_cv/videos
 /open_cv/xml
 /CNN_with_pytorch_lightning/Dataset
+CNN_model.ipynb
 # does not ignore the README.md file
 !README.md
