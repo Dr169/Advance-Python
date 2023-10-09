@@ -5,7 +5,9 @@
 /Pytorch/runs
 /Edge_detection
 /CNN_with_pytorch_lightning/runs
+/CNN_with_pytorch_lightning/logs
 /CNN_with_pytorch_lightning/Dataset
+/CNN_with_pytorch_lightning/checkpoints
 /CNN_with_pytorch_lightning/CNN_model.ipynb
 /Django
 /open_cv/images
