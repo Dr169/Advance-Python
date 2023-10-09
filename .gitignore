@@ -3,20 +3,14 @@
 /Pytorch/pth_files
 /Pytorch/data
 /Pytorch/runs
-<<<<<<< HEAD
-/Django
-/OpenCV/images
-/OpenCV/videos
-/OpenCV/xml
-=======
 /Edge_detection
 /CNN_with_pytorch_lightning/runs
 /CNN_with_pytorch_lightning/Dataset
+/CNN_with_pytorch_lightning/CNN_model.ipynb
 /Django
 /open_cv/images
 /open_cv/videos
 /open_cv/xml
->>>>>>> 6952a02 (old work)
 /CNN_with_pytorch_lightning/Dataset
 # does not ignore the README.md file
 !README.md
