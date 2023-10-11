@@ -15,11 +15,14 @@ import cv2
 import time
 import glob
 import random
+import operator
+import collections
 import numpy as np
 import albumentations as A
 import matplotlib.pyplot as plt
 
 from tqdm import tqdm
+from functools import reduce
 from pandas.core.common import flatten
 from tempfile import TemporaryDirectory
 from albumentations.pytorch import ToTensorV2
@@ -57,7 +60,7 @@ random.shuffle(train_image_paths)
 idx_to_class = {i:j for i, j in enumerate(class_names)}
 class_to_idx = {value:key for key,value in idx_to_class.items()}
 
-class Dataset(Dataset):
+class ImageDataset(Dataset):
     def __init__(self, image_paths, transform=False):
         self.image_paths = image_paths
         self.transform = transform
@@ -98,8 +101,8 @@ data_transforms = {
 }
 
 image_datasets = {
-    "Train" : Dataset(train_image_paths, data_transforms["Train"]),
-    "Validation" : Dataset(test_image_paths, data_transforms["Validation"]),
+    "Train" : ImageDataset(train_image_paths, data_transforms["Train"]),
+    "Validation" : ImageDataset(test_image_paths, data_transforms["Validation"]),
 }
 dataloaders = {x:DataLoader(image_datasets[x], batch_size=16, shuffle=True) for x in ["Train", "Validation"]}
 dataset_sizes = {x: len(image_datasets[x]) for x in ["Train", "Validation"]}
@@ -287,9 +290,7 @@ for img in random_imgs:
     time.sleep(2)
     plt.close("all")
 
-correct = {x:0 for x in class_names}
-wrong  = {x:0 for x in class_names}
-total = {x:0 for x in class_names}
+acc_data = {x:{"correct":0,"wrong":0,"total":0, "acc":0.0} for x in class_names}
 
 for img_path in glob.glob("./Dataset/Test/*"):
     was_training = model_conv.training
@@ -309,12 +310,17 @@ for img_path in glob.glob("./Dataset/Test/*"):
         model_conv.train(mode=was_training)
 
     if preds[0] == label:
-        correct[class_names[label]] += 1
+        acc_data[class_names[label]]["correct"] += 1
     elif preds[0] != label:
-        wrong[class_names[label]] +=1
-    total[class_names[label]] += 1
+        acc_data[class_names[label]]["wrong"] +=1
+    acc_data[class_names[label]]["total"] += 1
+    acc_data[class_names[label]]["acc"] = float(f"{acc_data[class_names[label]]['correct']/acc_data[class_names[label]]['total'] * 100:.2f}")
 
-print(f"Test acc : {sum(correct.values())/sum(total.values())*100:.2f}%\n")
-print(f"Correct : {correct}")
-print(f"Wrong : {wrong}")
-print(f"Total : {total}")
+result = dict(reduce(operator.add,map(collections.Counter, list(acc_data.values()))))
+
+print(f"Test Accuracy : {result['correct']/result['total']*100:.2f}%\n")
+print("Data Accuracy :")
+for key in acc_data.keys():
+    print(f"\t{key} :")
+    for k,v in acc_data[key].items():
+        print(f"\t\t{k} : {v}")
