@@ -1,4 +1,3 @@
-# ignores all .md files
 .md
 /Pytorch/pth_files
 /Pytorch/data
@@ -15,5 +14,7 @@
 /CNN_with_pytorch_lightning/Dataset
 CNN_model.ipynb
 Uni.cpp
-# does not ignore the README.md file
+/resnet_pytorch_lightning/Dataset
+/resnet_pytorch_lightning/logs
+/resnet_pytorch_lightning/checkpoints
 !README.md
