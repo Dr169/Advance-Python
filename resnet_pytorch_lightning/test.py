@@ -16,8 +16,7 @@ if __name__ == "__main__":
     test_dataset = dataset(test_data_path=test_path, is_not_test=False)
 
     logger = TensorBoardLogger("logs", name="CNN_model_test")
-    model = LightningModel.load_from_checkpoint(
-    checkpoint_path="./checkpoints/best.ckpt",)
+    model = LightningModel.load_from_checkpoint(checkpoint_path="./checkpoints/best.ckpt")
 
     trainer = pl.Trainer(accelerator="gpu", devices=1, max_epochs=20, logger=logger)
     trainer.test(model, test_dataset, ckpt_path="./checkpoints/best.ckpt")
