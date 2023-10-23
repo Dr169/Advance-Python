@@ -6,12 +6,13 @@ from torchvision import models
 from torchmetrics.functional import precision, recall, f1_score
 
 class LightningModel(pl.LightningModule):
-    def __init__(self, num_classes=10):
+    def __init__(self, num_classes=10, class_names=[]):
         super().__init__()
         self.model = models.resnet50(weights='IMAGENET1K_V2')
         for param in self.model.parameters():
             param.requires_grad = False
         self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
+        self.class_names = class_names
 
     def forward(self, x):
         return self.model(x)
@@ -56,3 +57,9 @@ class LightningModel(pl.LightningModule):
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
         return {'optimizer': optimizer, 'lr_scheduler': scheduler, 'monitor': 'val_loss'}
+    
+    def on_save_checkpoint(self, checkpoint):
+        checkpoint["class_names"] = self.class_names
+
+    def on_load_checkpoint(self, checkpoint):
+        self.class_names = checkpoint["class_names"]

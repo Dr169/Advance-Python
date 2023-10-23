@@ -28,7 +28,7 @@ class ImageDataset(Dataset):
         return image, label
 
 
-def dataset(train_data_path="", val_data_path="", test_data_path="", is_not_test=True):
+def dataset(train_data_path="", val_data_path="", test_data_path="", is_test=False, class_names=[]):
 
     data_transforms = {
         "Train": 
@@ -52,10 +52,21 @@ def dataset(train_data_path="", val_data_path="", test_data_path="", is_not_test
         ]),
     }
 
-    class_names = ['SeaRays','JellyFish','SeaUrchins','Otter','Penguin',
-                    'Seahorse','Crabs','StarFish','Dolphin','Octopus']
+    if is_test:
+        test_image_paths = []
 
-    if is_not_test:
+        for data_path in glob.glob(test_data_path + '/*.jpg'):
+            test_image_paths.append(data_path)
+
+        test_image_paths = list(flatten(test_image_paths))
+        idx_to_class = {i:j for i, j in enumerate(class_names)}
+        class_to_idx = {value:key for key,value in idx_to_class.items()}
+        image_datasets = {"Test" : ImageDataset(test_image_paths, class_to_idx, data_transforms["Test"])}
+        dataloaders = {"Test": DataLoader(image_datasets["Test"], batch_size=16, shuffle=False, num_workers=16)}
+
+        return dataloaders["Test"]
+    
+    else:
         val_image_paths = []
         train_image_paths = []
 
@@ -79,18 +90,4 @@ def dataset(train_data_path="", val_data_path="", test_data_path="", is_not_test
             "Validation": DataLoader(image_datasets["Validation"], batch_size=16, shuffle=False, num_workers=16),
         }
 
-        return dataloaders["Train"], dataloaders["Validation"]
-
-    else:
-        test_image_paths = []
-
-        for data_path in glob.glob(test_data_path + '/*.jpg'):
-            test_image_paths.append(data_path)
-
-        test_image_paths = list(flatten(test_image_paths))
-        idx_to_class = {i:j for i, j in enumerate(class_names)}
-        class_to_idx = {value:key for key,value in idx_to_class.items()}
-        image_datasets = {"Test" : ImageDataset(test_image_paths, class_to_idx, data_transforms["Test"])}
-        dataloaders = {"Test": DataLoader(image_datasets["Test"], batch_size=16, shuffle=False, num_workers=16)}
-    
-        return dataloaders["Test"]
+        return dataloaders["Train"], dataloaders["Validation"]  
