@@ -31,13 +31,13 @@ if __name__ == "__main__":
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image = transform(image=image)["image"].to(device)
             y_hat = model(image.unsqueeze(0)).argmax()
-            predicted.append(model.class_names[y_hat])
+            predicted.append((img, model.class_names[y_hat]))
     else:
         image = cv2.imread(args.predict_data)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = transform(image=image)["image"].to(device)
         y_hat = model(image.unsqueeze(0)).argmax()
-        predicted.append(model.class_names[y_hat])
+        predicted.append((args.predict_data, model.class_names[y_hat]))
 
 
     print(*predicted , sep="\n")
