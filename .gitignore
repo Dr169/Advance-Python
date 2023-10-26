@@ -14,7 +14,14 @@
 /CNN_with_pytorch_lightning/Dataset
 CNN_model.ipynb
 Uni.cpp
+yolov8n.pt
+yolov8x-cls.pt
 /resnet_pytorch_lightning/Dataset
 /resnet_pytorch_lightning/logs
 /resnet_pytorch_lightning/checkpoints
+/resnet_pytorch_lightning/__pycache__
+
+/classification_with_yolov8/Dataset
+/classification_with_yolov8
+/cancer_project
 !README.md
