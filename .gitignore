@@ -16,6 +16,7 @@ CNN_model.ipynb
 Uni.cpp
 yolov8n.pt
 yolov8x-cls.pt
+yolov8n-cls.pt
 /resnet_pytorch_lightning/Dataset
 /resnet_pytorch_lightning/logs
 /resnet_pytorch_lightning/checkpoints
