@@ -23,6 +23,6 @@ yolov8n-cls.pt
 /resnet_pytorch_lightning/__pycache__
 
 /classification_with_yolov8/Dataset
-/classification_with_yolov8
-/cancer_project
+/classification_with_yolov8/runs
+
 !README.md
