@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 
 parser = ArgumentParser()
-parser.add_argument("--data", type=str, default="./Dataset/Predict/")
+parser.add_argument("--data", type=str, default="../datasets/classify/predict")
 parser.add_argument("--model_path", type=str, default="./runs/classify/train/weights/best.pt")
 parser.add_argument("--device", type=str, default="cuda")
 parser.add_argument("--imgsz", type=int, default=224)

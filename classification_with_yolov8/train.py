@@ -7,8 +7,8 @@ cudnn.benchmark = True
 torch.set_float32_matmul_precision("high")
 
 parser = ArgumentParser()
-parser.add_argument("--data", type=str, default="./Dataset/")
-parser.add_argument("--model_path", type=str, default="../yolov8x-cls.pt")
+parser.add_argument("--data", type=str, default="../datasets/classify")
+parser.add_argument("--model_path", type=str, default="./yolov8x-cls.pt")
 parser.add_argument("--device", type=str, default="cuda")
 parser.add_argument("--epochs", type=int, default=20)
 parser.add_argument("--imgsz", type=int, default=224)
