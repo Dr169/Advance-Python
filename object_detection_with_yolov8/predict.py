@@ -15,6 +15,6 @@ model = YOLO(args.model_path)
 
 device = 0 if torch.cuda.is_available() and args.device == "cuda" else 'cpu'
 
-data_set = glob.glob(f"{args.data}/*.jpg")
+data_set = glob.glob(f"{args.data}/*")
 for img in data_set:
     model.predict(img, save=True, imgsz=args.imgsz, device=device)
