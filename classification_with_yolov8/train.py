@@ -13,14 +13,24 @@ parser.add_argument("--device", type=str, default="cuda")
 parser.add_argument("--epochs", type=int, default=20)
 parser.add_argument("--imgsz", type=int, default=224)
 parser.add_argument("--batch", type=int, default=16)
+parser.add_argument("--freeze", type=int, default=9)
+parser.add_argument("--export", type=bool, default=True)
+parser.add_argument("--format", type=str, default="onnx")
 args = parser.parse_args()
 
-yolo = YOLO(model=args.model_path, task="classify")
+model = YOLO(model=args.model_path, task="classify")
 
 device = 0 if torch.cuda.is_available() and args.device == "cuda" else "cpu"
 
-freeze = []
-for k, v in yolo.named_parameters():
-    freeze.append(k)
+want_to_freeze = [f'model.{x}.' for x in range(args.freeze)]
+freezed_layers = []
+for k, v in model.named_parameters():
+    if any(x in k for x in want_to_freeze):
+        v.requires_grad = False
+        freezed_layers.append(k)
 
-yolo.train(data=args.data, epochs=args.epochs, imgsz=args.imgsz, batch=args.bath, freeze=freeze[:-2], device=device)
+model.train(data=args.data, epochs=args.epochs, imgsz=args.imgsz, batch=args.batch, freeze=freezed_layers, device=device)
+
+if args.export:
+    model.export(format=args.format)
+    print(f"Model exported to {args.format} format")
