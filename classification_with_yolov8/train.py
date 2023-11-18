@@ -32,5 +32,5 @@ for k, v in model.named_parameters():
 model.train(data=args.data, epochs=args.epochs, imgsz=args.imgsz, batch=args.batch, freeze=freezed_layers, device=device)
 
 if args.export:
-    model.export(format=args.format)
+    model.export(format=args.format, dynamic=True)
     print(f"Model exported to {args.format} format")
