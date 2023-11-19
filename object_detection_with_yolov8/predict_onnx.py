@@ -70,7 +70,7 @@ for batch_out in ort_outs:
         keep = anchor_scores > 0.25
         pred = pred[: , keep]
 
-        num_classes, num_anchors = pred.shape[0], pred.shape[1] - 4
+        num_classes, num_anchors = pred.shape[0] - 4, pred.shape[1]
 
         bbox_coords = np.transpose(pred[:4])
         class_probs = np.transpose(pred[4:])
