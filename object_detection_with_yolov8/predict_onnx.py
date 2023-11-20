@@ -50,10 +50,12 @@ ort_outs = []
 for batch in batched_data:
     ort_outs.append(ort_session.run(None, {ort_session.get_inputs()[0].name: batch})[0])
 
-for batch_out in ort_outs:
-    for i in range(batch_out.shape[0]):
-        pred = batch_out[i]
-        img_path = data_set[i]
+data_set = [data_set[i:i + batch_size] for i in range(0, len(data_set), batch_size)]
+
+for index, batch_out in enumerate(ort_outs):
+    for i in range(batch_out[0].shape[0]):
+        pred = batch_out[0][i]
+        img_path = data_set[index][i]
 
         original_image = Image.open(img_path)
         draw = ImageDraw.Draw(original_image)
